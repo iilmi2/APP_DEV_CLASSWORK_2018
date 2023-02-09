@@ -1,12 +1,15 @@
 <Query Kind="Expression">
   <Connection>
-    <ID>5fa65548-36a3-4a37-83e2-2c73f088e993</ID>
+    <ID>85cf5cbc-ab84-4a19-ba62-eba0bdf5367a</ID>
     <NamingServiceVersion>2</NamingServiceVersion>
     <Persist>true</Persist>
-    <Server>WB320-04\SQLEXPRESS</Server>
+    <Server>DESKTOP-4OM47VD</Server>
     <AllowDateOnlyTimeOnly>true</AllowDateOnlyTimeOnly>
     <DeferDatabasePopulation>true</DeferDatabasePopulation>
     <Database>GroceryList</Database>
+    <DriverData>
+      <LegacyMFA>false</LegacyMFA>
+    </DriverData>
   </Connection>
 </Query>
 
@@ -33,3 +36,22 @@ Stores
 	}
 	)
 	.OrderBy(z => z.Location)
+
+Stores
+	.OrderBy(x => x.City)
+	.ThenBy(x => x.Location)
+	.Select(x => new
+	{
+		city = x.City,
+		location = x.Location,
+		sales = Orders.Where(orders => orders.OrderDate.Month == 12 && orders.StoreID == x.StoreID )
+				.GroupBy(gb => gb.OrderDate)
+				.Select(day => new
+					{
+						date = day.Key,
+						numberoforders = day.Count(),
+						productsales = day.Sum(x => x.SubTotal)
+					})
+	})
+	
+
