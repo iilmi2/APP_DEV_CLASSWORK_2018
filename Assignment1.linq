@@ -1,4 +1,4 @@
-<Query Kind="Expression">
+<Query Kind="Statements">
   <Connection>
     <ID>f6755e73-7121-40a3-87f7-60ea69ae2796</ID>
     <NamingServiceVersion>2</NamingServiceVersion>
@@ -20,7 +20,8 @@ OrderLists
 		ProductName = Products.Where(p => x.Key == p.ProductID).Select(a => a.Description),
 		TimesPurchased = x.Count()
 	})
-		.OrderByDescending(x => x.TimesPurchased),
+		.OrderByDescending(x => x.TimesPurchased)
+		.Dump();
 
 Stores
 	.Select(x => new
@@ -36,6 +37,7 @@ Stores
 	}
 	)
 	.OrderBy(z => z.Location)
+	.Dump();
 
 Stores
 	.OrderBy(x => x.City)
@@ -53,7 +55,7 @@ Stores
 					productsales = day.Sum(x => x.SubTotal),
 					gst = day.Sum(x => x.GST)
 				})
-	})
+	}).Dump();
 
 
 OrderLists
@@ -70,7 +72,7 @@ OrderLists
 			Discount = q.Discount,
 			Subtotal = q.QtyOrdered > 1 ? (q.Price * Convert.ToDecimal(q.QtyOrdered)) : q.Price,
 			Tax = (q.Price * Convert.ToDecimal(q.QtyOrdered)) * Convert.ToDecimal(0.05),
-			ExtendedPrice =
+			ExtendedPrice = 
 		})
 	}
 	)
@@ -87,6 +89,7 @@ Orders
 		AvgRevenue = x.Average(a => a.SubTotal)
 	})
 	.OrderBy(x => x.Location)
+	.Dump();
 	
 Customers
 	.Where(x => x.CustomerID == 1)
@@ -103,3 +106,4 @@ Customers
 					.OrderByDescending(d => d.timesbought)
 					.ThenBy(d => d.description)
 	})
+	.Dump();
